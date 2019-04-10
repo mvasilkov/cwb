@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ru-RU">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Worker Without Lock</title>
+        <link rel="stylesheet" href="/node_modules/systematize/build/systematize.min.css">
+        <link rel="stylesheet" href="/node_modules/systematize/build/addons.min.css">
+    </head>
+    <body>
+        <div class="container">
+            <article>
+                <h1>Worker Without Lock</h1>
+                <p>Count: <span id="count"></span></p>
+                <p>Actions: <span id="actions"></span></p>
+            </article>
+        </div>
+        <script src="./worker.js"></script>
+        <script>
+            function inc() {
+                const count = +localStorage.getItem('without_lock_count')
+                schedule(() => save(count + 1))
+                ++actions
+            }
+        </script>
+    </body>
+</html>
