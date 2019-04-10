@@ -1,0 +1,12 @@
+{
+  "name": "cwb",
+  "version": "0.0.1",
+  "description": "Cross-Window Broadcasting",
+  "main": "cwb.js",
+  "repository": "git@github.com:mvasilkov/cwb.git",
+  "author": "Mark Vasilkov (https://github.com/mvasilkov)",
+  "license": "MIT",
+  "dependencies": {
+    "buffer": "^5.2.1"
+  }
+}
