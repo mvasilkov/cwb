@@ -7,7 +7,8 @@
   "author": "Mark Vasilkov (https://github.com/mvasilkov)",
   "license": "MIT",
   "dependencies": {
-    "buffer": "^5.2.1"
+    "buffer": "^5.2.1",
+    "fast-mutex": "^1.0.2"
   },
   "devDependencies": {
     "systematize": "^3.2.4"

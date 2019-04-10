@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ru-RU">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>With Lock</title>
+        <link rel="stylesheet" href="/node_modules/systematize/build/systematize.min.css">
+        <link rel="stylesheet" href="/node_modules/systematize/build/addons.min.css">
+        <style>
+            body {
+                overflow: hidden;
+            }
+
+            a {
+                color: #f82e91;
+            }
+
+            iframe {
+                display: block;
+                float: left;
+                height: 250px;
+                width: 25vw;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <article>
+                <h1>With Lock</h1>
+                <p>Actions: <span id="actions"></span></p>
+                <p><a href="?" id="start">Start</a></p>
+            </article>
+        </div>
+        <iframe src="./worker/with_lock.html" frameborder="0"></iframe>
+        <iframe src="./worker/with_lock.html" frameborder="0"></iframe>
+        <iframe src="./worker/with_lock.html" frameborder="0"></iframe>
+        <iframe src="./worker/with_lock.html" frameborder="0"></iframe>
+        <iframe src="./worker/with_lock.html" frameborder="0"></iframe>
+        <iframe src="./worker/with_lock.html" frameborder="0"></iframe>
+        <iframe src="./worker/with_lock.html" frameborder="0"></iframe>
+        <iframe src="./worker/with_lock.html" frameborder="0"></iframe>
+        <script>
+            const $actions = document.getElementById('actions')
+            let put = 0
+            let totalActions = 0
+
+            document.getElementById('start').addEventListener('click', event => {
+                const a = Math.floor(Math.random() * 0x20000000000000)
+                localStorage.setItem('with_lock_count', 0)
+                localStorage.setItem('with_lock_start', a)
+                $actions.textContent = ''
+                event.preventDefault()
+            })
+
+            function putActions(actions) {
+                totalActions += actions
+                $actions.textContent = totalActions
+                if (++put == 8) {
+                    put = 0
+                    totalActions = 0
+                }
+            }
+        </script>
+    </body>
+</html>

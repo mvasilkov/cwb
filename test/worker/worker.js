@@ -5,28 +5,29 @@ const schedule = fun => {
     const wait = Math.floor(Math.random() * 40)
     return new Promise(resolve => {
         setTimeout(() => {
-            fun()
-            resolve()
+            resolve(fun())
         }, wait)
     })
 }
 
 let actions = 0
+let put = false
 
 addEventListener('storage', event => {
-    if (event.key == 'without_lock_start') {
+    if (event.key == 'without_lock_start' || event.key == 'with_lock_start') {
         actions = 0
         schedule(inc)
     }
 })
 
-function save(count) {
-    localStorage.setItem('without_lock_count', count)
+function save(key, count) {
+    localStorage.setItem(key, count)
     $count.textContent = count
     $actions.textContent = actions
-    if (count >= 100) {
+    if (count >= 100 && !put) {
         parent.putActions(actions)
-        return
+        put = true
+        return false
     }
-    schedule(inc)
+    return true
 }

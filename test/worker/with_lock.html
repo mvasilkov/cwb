@@ -3,27 +3,35 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Worker Without Lock</title>
+        <title>Worker With Lock</title>
         <link rel="stylesheet" href="/node_modules/systematize/build/systematize.min.css">
         <link rel="stylesheet" href="/node_modules/systematize/build/addons.min.css">
     </head>
     <body>
         <div class="container">
             <article>
-                <h1>Worker Without Lock</h1>
+                <h1>Worker With Lock</h1>
                 <p>Count: <span id="count"></span></p>
                 <p>Actions: <span id="actions"></span></p>
             </article>
         </div>
+        <script src="/node_modules/fast-mutex/dist/fast-mutex.js"></script>
         <script src="./worker.js"></script>
         <script>
+            const mutex = new FastMutex
+            let _next
+
             function inc() {
-                const count = +localStorage.getItem('without_lock_count')
-                ++actions
-                schedule(() => save('without_lock_count', count + 1))
-                    .then(next => {
-                        if (next) schedule(inc)
-                    })
+                mutex.lock('lock').then(() => {
+                    const count = +localStorage.getItem('with_lock_count')
+                    ++actions
+                    return schedule(() => save('with_lock_count', count + 1))
+                }).then(next => {
+                    _next = next
+                    return mutex.release('lock')
+                }).then(() => {
+                    if (_next) schedule(inc)
+                })
             }
         </script>
     </body>
