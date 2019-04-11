@@ -17,13 +17,13 @@
         </div>
         <script src="./worker.js"></script>
         <script>
-            function inc() {
+            init('without_lock_start')
+
+            async function inc() {
                 const count = +localStorage.getItem('without_lock_count')
                 ++actions
-                schedule(() => save('without_lock_count', count + 1))
-                    .then(next => {
-                        if (next) schedule(inc)
-                    })
+                const next = await schedule(() => save('without_lock_count', count + 1))
+                if (next) schedule(inc)
             }
         </script>
     </body>

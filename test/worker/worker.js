@@ -13,12 +13,15 @@ const schedule = fun => {
 let actions = 0
 let put = false
 
-addEventListener('storage', event => {
-    if (event.key == 'without_lock_start' || event.key == 'with_lock_start') {
-        actions = 0
-        schedule(inc)
-    }
-})
+function init(key) {
+    addEventListener('storage', event => {
+        if (event.key == key && event.storageArea == localStorage) {
+            actions = 0
+            put = false
+            schedule(inc)
+        }
+    })
+}
 
 function save(key, count) {
     localStorage.setItem(key, count)

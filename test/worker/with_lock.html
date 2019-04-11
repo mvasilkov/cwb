@@ -15,23 +15,18 @@
                 <p>Actions: <span id="actions"></span></p>
             </article>
         </div>
-        <script src="/node_modules/fast-mutex/dist/fast-mutex.js"></script>
+        <script src="/lock.js"></script>
         <script src="./worker.js"></script>
         <script>
-            const mutex = new FastMutex
-            let _next
+            init('with_lock_start')
 
-            function inc() {
-                mutex.lock('lock').then(() => {
+            async function inc() {
+                const next = await lock('lock', () => {
                     const count = +localStorage.getItem('with_lock_count')
                     ++actions
                     return schedule(() => save('with_lock_count', count + 1))
-                }).then(next => {
-                    _next = next
-                    return mutex.release('lock')
-                }).then(() => {
-                    if (_next) schedule(inc)
                 })
+                if (next) schedule(inc)
             }
         </script>
     </body>
