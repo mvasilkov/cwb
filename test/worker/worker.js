@@ -1,6 +1,6 @@
 const $actions = document.getElementById('actions')
 const $count = document.getElementById('count')
-// const schedule = requestAnimationFrame
+
 const schedule = fun => {
     const wait = Math.floor(Math.random() * 40)
     return new Promise(resolve => {
