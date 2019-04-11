@@ -3,11 +3,19 @@
   "version": "0.0.1",
   "description": "Cross-Window Broadcasting",
   "main": "cwb.js",
+  "files": [
+    "build/cwb.js",
+    "cwb.js",
+    "lock.js",
+    "objectid.js",
+    "utils.js"
+  ],
   "repository": "git@github.com:mvasilkov/cwb.git",
   "author": "Mark Vasilkov (https://github.com/mvasilkov)",
   "license": "MIT",
   "dependencies": {
-    "buffer": "^5.2.1"
+    "buffer": "^5.2.1",
+    "wolfy87-eventemitter": "^5.2.6"
   },
   "devDependencies": {
     "systematize": "^3.2.4"
