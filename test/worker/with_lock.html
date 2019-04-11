@@ -15,13 +15,13 @@
                 <p>Actions: <span id="actions"></span></p>
             </article>
         </div>
-        <script src="/lock.js"></script>
+        <script src="/build/cwb.js"></script>
         <script src="./worker.js"></script>
         <script>
             workerInit('start_with_lock')
 
             async function inc() {
-                const next = await lock('worker', () => {
+                const next = await cwb.lock('worker', () => {
                     const count = +localStorage.getItem('count_with_lock')
                     ++actions
                     return schedule(() => save('count_with_lock', count + 1))

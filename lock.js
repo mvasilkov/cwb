@@ -1,3 +1,5 @@
+const ObjectId = require('./objectid')
+
 const sleep = pause => new Promise(resolve => setTimeout(resolve, pause))
 
 async function lock(key, wait, fun) {
@@ -6,7 +8,7 @@ async function lock(key, wait, fun) {
         wait = 9000
     }
 
-    const lockId = '' + Math.random()
+    const lockId = (new ObjectId).toString()
     let started = Date.now()
 
     const getvar = a => localStorage.getItem(`❌${key}.${a}`)
@@ -44,4 +46,9 @@ async function lock(key, wait, fun) {
     }
 
     return await loop()
+}
+
+module.exports = {
+    sleep,
+    lock,
 }
