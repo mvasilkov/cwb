@@ -18,13 +18,13 @@
         <script src="/lock.js"></script>
         <script src="./worker.js"></script>
         <script>
-            init('with_lock_start')
+            workerInit('start_with_lock')
 
             async function inc() {
-                const next = await lock('lock', () => {
-                    const count = +localStorage.getItem('with_lock_count')
+                const next = await lock('worker', () => {
+                    const count = +localStorage.getItem('count_with_lock')
                     ++actions
-                    return schedule(() => save('with_lock_count', count + 1))
+                    return schedule(() => save('count_with_lock', count + 1))
                 })
                 if (next) schedule(inc)
             }

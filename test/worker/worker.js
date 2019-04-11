@@ -13,7 +13,7 @@ const schedule = fun => {
 let actions = 0
 let put = false
 
-function init(key) {
+function workerInit(key) {
     addEventListener('storage', event => {
         if (event.key == key && event.storageArea == localStorage) {
             actions = 0

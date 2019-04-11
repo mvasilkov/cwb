@@ -3,8 +3,8 @@ const sleep = pause => new Promise(resolve => setTimeout(resolve, pause))
 async function lock(key, fun) {
     const lockId = '' + Math.random()
 
-    const getvar = a => localStorage.getItem(`Lock.${key}.${a}`)
-    const putvar = (a, b) => localStorage.setItem(`Lock.${key}.${a}`, b)
+    const getvar = a => localStorage.getItem(`❌${key}.${a}`)
+    const putvar = (a, b) => localStorage.setItem(`❌${key}.${a}`, b)
 
     /* Alur and Taubenfeld's algorithm */
     async function loop() {
