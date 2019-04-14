@@ -14,7 +14,7 @@ class Channel extends EventEmitter {
         this.queueSize = queueSize
         this.queueTTL = queueTTL
         this.seenEvents = new Set
-        this.started = Date.now()
+        this.started = Math.floor(Date.now() / 1e3)
 
         addEventListener('storage', this.onstorage)
 
@@ -44,7 +44,8 @@ class Channel extends EventEmitter {
     send(event, args, { pk, toSelf } = {}) {
         if (!Array.isArray(args)) args = [args]
         if (!pk) pk = (new ObjectId).toString()
-        if (!toSelf) this.seenEvents.add(pk)
+
+        this.seenEvents.add(pk)
 
         return lock(this.key, () => {
             let queue
@@ -66,6 +67,8 @@ class Channel extends EventEmitter {
             catch (err) {
                 console.error(`Channel(${this.key}): localStorage went bad`)
             }
+
+            if (toSelf) this.trigger(event, args)
         })
     }
 }
@@ -73,6 +76,7 @@ class Channel extends EventEmitter {
 module.exports = {
     __esModule: true,
     default: Channel,
+    Channel,
     EventEmitter,
     ObjectId,
     sleep,
