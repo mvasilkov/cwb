@@ -18,6 +18,9 @@
     "wolfy87-eventemitter": "^5.2.6"
   },
   "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "babel-loader": "^8.0.5",
     "systematize": "^3.2.4"
   }
 }
