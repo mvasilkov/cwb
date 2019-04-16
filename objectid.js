@@ -152,7 +152,7 @@ class ObjectId {
    */
   static generate(time) {
     if ('number' !== typeof time) {
-      time = ~~(Date.now() / 1000);
+      time = Math.floor(Date.now() / 1e3);
     }
 
     const inc = ObjectId.getInc();

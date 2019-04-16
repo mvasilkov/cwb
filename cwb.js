@@ -29,15 +29,7 @@ class Channel extends EventEmitter {
             event.storageArea != localStorage) return
 
         try {
-            JSON.parse(event.newValue).forEach(a => {
-                if (this.seenEvents.has(a.pk)) return
-                this.seenEvents.add(a.pk)
-
-                const objectid = new ObjectId(a.pk)
-                if (objectid.generationTime < this.started) return
-
-                this.trigger(a.event, a.args)
-            })
+            this.queueConsume(JSON.parse(event.newValue))
         }
         catch (err) {
             console.error(`Channel(${this.key}): localStorage went bad`)
@@ -46,7 +38,7 @@ class Channel extends EventEmitter {
 
     cleanup = async () => {
         await lock(this.key, () => {
-            const t = Date.now() - this.queueTTL
+            const t = Math.floor((Date.now() - this.queueTTL) / 1e3)
             const queue = this.queueLoad().filter(a => {
                 const objectid = new ObjectId(a.pk)
                 return objectid.generationTime >= t
@@ -80,6 +72,10 @@ class Channel extends EventEmitter {
         })
     }
 
+    update() {
+        this.queueConsume(this.queueLoad())
+    }
+
     queueLoad() {
         try {
             return JSON.parse(localStorage.getItem(`⭕️${this.key}`) || '[]')
@@ -96,6 +92,18 @@ class Channel extends EventEmitter {
         catch (err) {
             console.error(`Channel(${this.key}): localStorage went bad`)
         }
+    }
+
+    queueConsume(queue) {
+        queue.forEach(a => {
+            if (this.seenEvents.has(a.pk)) return
+            this.seenEvents.add(a.pk)
+
+            const objectid = new ObjectId(a.pk)
+            if (objectid.generationTime < this.started) return
+
+            this.trigger(a.event, a.args)
+        })
     }
 }
 
