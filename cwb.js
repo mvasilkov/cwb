@@ -17,6 +17,7 @@ class Channel extends EventEmitter {
         this.queueTTL = queueTTL
         this.seenEvents = new Set
         this.started = Math.floor(Date.now() / 1e3)
+        this.disposed = false
 
         addEventListener('storage', this.onstorage)
         sleep(shiftInitial(this.queueTTL)).then(this.cleanup)
@@ -37,6 +38,8 @@ class Channel extends EventEmitter {
     }
 
     cleanup = async () => {
+        if (this.disposed) return
+
         await lock(this.key, () => {
             const t = Math.floor((Date.now() - this.queueTTL) / 1e3)
             const queue = this.queueLoad().filter(a => {
@@ -74,6 +77,12 @@ class Channel extends EventEmitter {
 
     update() {
         this.queueConsume(this.queueLoad())
+    }
+
+    dispose() {
+        this.disposed = true
+        removeEventListener('storage', this.onstorage)
+        delete cache[this.key]
     }
 
     queueLoad() {
