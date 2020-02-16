@@ -1,20 +1,25 @@
-const ObjectId = require('./objectid')
+'use strict'
 
-const sleep = pause => new Promise(resolve => setTimeout(resolve, pause))
+import ObjectId from '../bson/objectid'
 
-async function lock(key, wait, fun) {
-    if (typeof wait == 'function') {
-        fun = wait
-        wait = 9000
-    }
+export const sleep = (pause?: number) => new Promise(resolve => setTimeout(resolve, pause))
 
+type CriticalSection<T> = () => T | Promise<T>
+
+/**
+ * Locking (synchronization)
+ * @param key A string that uniquely identifies the lock.
+ * @param fun Critical section. This function can be async.
+ * @param wait The timeout interval (optional).
+ */
+export async function lock<T>(key: string, fun: CriticalSection<T>, wait: number = 9000) {
     const lockId = (new ObjectId).toString()
     let started = Date.now()
 
-    const getvar = a => localStorage.getItem(`❌${key}.${a}`)
-    const putvar = (a, b) => localStorage.setItem(`❌${key}.${a}`, b)
+    const getvar = (a: string) => localStorage.getItem(`❌${key}.${a}`)
+    const putvar = (a: string, b: string) => localStorage.setItem(`❌${key}.${a}`, b)
 
-    const checkSleep = async a => {
+    const checkSleep = async (a: string) => {
         await sleep()
         if (Date.now() - started > wait) {
             started = Date.now()
@@ -24,7 +29,7 @@ async function lock(key, wait, fun) {
     }
 
     /* Alur and Taubenfeld's algorithm */
-    async function loop() {
+    async function loop(): Promise<T> {
         putvar('X', lockId)
         while (getvar('Y')) await checkSleep('Y')
         putvar('Y', lockId)
@@ -46,9 +51,4 @@ async function lock(key, wait, fun) {
     }
 
     return await loop()
-}
-
-module.exports = {
-    sleep,
-    lock,
 }

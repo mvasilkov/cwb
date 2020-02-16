@@ -14,13 +14,13 @@
   "author": "Mark Vasilkov (https://github.com/mvasilkov)",
   "license": "MIT",
   "dependencies": {
-    "buffer": "^5.2.1",
-    "wolfy87-eventemitter": "^5.2.6"
+    "buffer": "^5.4.3",
+    "wolfy87-eventemitter": "^5.2.9"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.3",
-    "@babel/plugin-proposal-class-properties": "^7.4.0",
-    "babel-loader": "^8.0.5",
-    "systematize": "^3.2.4"
+    "@babel/core": "^7.8.4",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "babel-loader": "^8.0.6",
+    "systematize": "^3.3.1"
   }
 }

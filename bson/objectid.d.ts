@@ -241,7 +241,7 @@ declare class Buffer extends Uint8Array {
 /**
  * A class representation of the BSON ObjectId type.
  */
-export class ObjectId {
+export default class ObjectId {
     /**
      * Create a new ObjectId instance
      * @param {(string|Buffer|number|ObjectId)} id Can be a 24 byte hex string, 12 byte binary Buffer, or a Number.
