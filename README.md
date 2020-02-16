@@ -1,9 +1,11 @@
 cwb: Cross-Window Broadcasting
 ===
 
-**cwb** (pronounced *wub*) is a JavaScript library for cross-window broadcasting and locking.
+**cwb** (pronounced *wub*) is a JavaScript library for cross-window
+broadcasting and locking.
 
-[![npm][npm-image]][npm-url]
+[![npm][npm-badge]][npm-url]
+[![dependencies][dependencies-badge]][dependencies-url]
 
 ---
 
@@ -11,7 +13,7 @@ Installation
 ---
 
 ```sh
-yarn add cwb
+npm add cwb
 ```
 
 Usage
@@ -22,17 +24,17 @@ Usage
 ```javascript
 import { Channel } from 'cwb'
 
-const foochan = new Channel('foo')
-foochan.on('bar', b => console.log('Got bar:', b))
+const chan = new Channel('foo')
+chan.on('bar', b => console.log('Got bar:', b))
 
 /* In another tab: */
 
-const foochan = new Channel('foo')
-foochan.send('bar', 'Porter and Sons')
+const chan = new Channel('foo')
+chan.send('bar', 'Porter and Sons')
 
 /* Send to the same tab: */
 
-foochan.send('bar', 'Porter and Sons', { toSelf: true })
+chan.send('bar', 'Porter and Sons', { toSelf: true })
 ```
 
 **Locking (synchronization)**
@@ -61,8 +63,11 @@ License
 
 MIT
 
-[bson][bson] (a vendored dependency) is licensed under the Apache License 2.0
+The ObjectId type (a vendored dependency) comes from [bson][bson],
+which is licensed under the Apache License 2.0
 
-[npm-image]: https://img.shields.io/npm/v/cwb.svg?style=flat-square
+[npm-badge]: https://img.shields.io/npm/v/cwb.svg?style=flat
 [npm-url]: https://www.npmjs.com/package/cwb
+[dependencies-badge]: https://img.shields.io/david/mvasilkov/cwb?style=flat
+[dependencies-url]: https://www.npmjs.com/package/cwb?activeTab=dependencies
 [bson]: https://www.npmjs.com/package/bson

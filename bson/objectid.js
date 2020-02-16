@@ -1,8 +1,7 @@
 'use strict';
 
 const Buffer = require('buffer').Buffer;
-let randomBytes = require('./utils').randomBytes;
-const deprecate = function () {};
+const randomBytes = require('./utils').randomBytes;
 
 // constants
 const PROCESS_UNIQUE = randomBytes(5);
@@ -152,7 +151,7 @@ class ObjectId {
    */
   static generate(time) {
     if ('number' !== typeof time) {
-      time = Math.floor(Date.now() / 1e3);
+      time = ~~(Date.now() / 1000);
     }
 
     const inc = ObjectId.getInc();
@@ -314,6 +313,7 @@ class ObjectId {
    * Checks if a value is a valid bson ObjectId
    *
    * @method
+   * @param {*} id ObjectId instance to validate.
    * @return {boolean} return true if the value is a valid bson ObjectId, return false otherwise.
    */
   static isValid(id) {
@@ -358,27 +358,6 @@ class ObjectId {
     return new ObjectId(doc.$oid);
   }
 }
-
-// Deprecated methods
-ObjectId.get_inc = deprecate(
-  () => ObjectId.getInc(),
-  'Please use the static `ObjectId.getInc()` instead'
-);
-
-ObjectId.prototype.get_inc = deprecate(
-  () => ObjectId.getInc(),
-  'Please use the static `ObjectId.getInc()` instead'
-);
-
-ObjectId.prototype.getInc = deprecate(
-  () => ObjectId.getInc(),
-  'Please use the static `ObjectId.getInc()` instead'
-);
-
-ObjectId.prototype.generate = deprecate(
-  time => ObjectId.generate(time),
-  'Please use the static `ObjectId.generate(time)` instead'
-);
 
 /**
  * @ignore
