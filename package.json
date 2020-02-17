@@ -1,14 +1,24 @@
 {
   "name": "cwb",
-  "version": "0.0.3",
-  "description": "Cross-Window Broadcasting",
-  "main": "cwb.js",
+  "version": "1.0.0",
+  "description": "Cross-Window Broadcasting and Locking",
+  "keywords": [
+    "typescript",
+    "mutex",
+    "lock",
+    "synchronization",
+    "broadcast",
+    "crosstab",
+    "intercom",
+    "pubsub",
+    "eventemitter",
+    "localstorage"
+  ],
+  "main": "javascript/cwb.js",
   "files": [
-    "build/cwb.js",
-    "cwb.js",
-    "lock.js",
-    "objectid.js",
-    "utils.js"
+    "bson",
+    "build",
+    "javascript"
   ],
   "repository": "git@github.com:mvasilkov/cwb.git",
   "author": "Mark Vasilkov (https://github.com/mvasilkov)",

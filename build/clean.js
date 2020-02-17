@@ -8,3 +8,10 @@ a = a.replace(/\n*\/\*![^]*?\*\/\n*/g, b => {
     return ''
 })
 fs.writeFileSync(cwb, a, { encoding: 'utf8' })
+
+const license_txt = path.resolve(__dirname, 'cwb.js.LICENSE.txt')
+try {
+    fs.unlinkSync(license_txt)
+}
+catch (err) {
+}

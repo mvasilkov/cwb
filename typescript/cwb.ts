@@ -7,7 +7,7 @@ import { sleep, lock } from './lock'
 
 const cache: { [key: string]: Channel } = Object.create(null)
 
-const shiftInitial = (t: number) => Math.floor(0.5 * t * (Math.random() + 1))
+const shiftInitialCleanup = (t: number) => Math.floor(0.5 * t * (Math.random() + 1))
 
 type QueuedEvent = {
     pk: string
@@ -41,7 +41,7 @@ class Channel extends EventEmitter {
         this.disposed = false
 
         addEventListener('storage', this.onstorage)
-        sleep(shiftInitial(this.queueTTL)).then(this.cleanup)
+        sleep(shiftInitialCleanup(this.queueTTL)).then(this.cleanup)
 
         cache[key] = this
     }
@@ -77,17 +77,17 @@ class Channel extends EventEmitter {
         sleep(this.queueTTL).then(this.cleanup)
     }
 
-    send(event: string, args: any[], { pk, toSelf }: SendOptions = {}) {
+    send(event: string, args: any[], options: SendOptions = {}) {
         if (!Array.isArray(args)) args = [args]
-        if (!pk) pk = (new ObjectId).toString()
+        const pk = options.pk ?? (new ObjectId).toString()
 
         this.seenEvents.add(pk)
-        if (toSelf) this.trigger(event, args)
+        if (options.toSelf) this.trigger(event, args)
 
-        return lock<unknown>(this.key, () => {
+        return lock(this.key, () => {
             const queue = this.queueLoad()
 
-            queue.push({ pk: pk!, event, args })
+            queue.push({ pk, event, args })
             while (queue.length > this.queueSize) {
                 this.seenEvents.delete(queue.shift()!.pk)
             }

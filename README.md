@@ -19,25 +19,33 @@ npm add cwb
 Usage
 ---
 
-**Communicating between tabs**
+### Communicating between tabs
+
+#### Subscribe to events
 
 ```javascript
 import { Channel } from 'cwb'
 
 const chan = new Channel('foo')
 chan.on('bar', b => console.log('Got bar:', b))
+```
 
-/* In another tab: */
+#### Publish events
+
+```javascript
+/* In another tab */
 
 const chan = new Channel('foo')
 chan.send('bar', 'Porter and Sons')
+```
 
-/* Send to the same tab: */
+#### Send to the same tab
 
+```javascript
 chan.send('bar', 'Porter and Sons', { toSelf: true })
 ```
 
-**Locking (synchronization)**
+### Locking (synchronization)
 
 ```javascript
 import { lock } from 'cwb'
@@ -49,6 +57,10 @@ lock('foo', () => {
 
 Changelog
 ---
+
+**1.0.0**
+
+Migrate to TypeScript
 
 **0.0.3**
 

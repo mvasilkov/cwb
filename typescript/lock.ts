@@ -2,6 +2,10 @@
 
 import ObjectId from '../bson/objectid'
 
+/**
+ * An asynchronous sleep function.
+ * @param pause Wait time in milliseconds (optional)
+ */
 export const sleep = (pause?: number) => new Promise(resolve => setTimeout(resolve, pause))
 
 type CriticalSection<T> = () => T | Promise<T>
@@ -28,7 +32,9 @@ export async function lock<T>(key: string, fun: CriticalSection<T>, wait: number
         }
     }
 
-    /* Alur and Taubenfeld's algorithm */
+    /**
+     * Alur and Taubenfeld's algorithm.
+     */
     async function loop(): Promise<T> {
         putvar('X', lockId)
         while (getvar('Y')) await checkSleep('Y')
@@ -52,3 +58,5 @@ export async function lock<T>(key: string, fun: CriticalSection<T>, wait: number
 
     return await loop()
 }
+
+export default lock
